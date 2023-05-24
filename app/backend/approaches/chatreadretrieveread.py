@@ -21,10 +21,13 @@ from text import nonewlines
 
 class ChatReadRetrieveReadApproach(Approach):
     prompt_prefix = """<|im_start|>system
-Assistant helps the students and staff with questions about University West or Högskolan Väst. Be brief in your answers.
-Answer ONLY with the facts listed in the list of sources below or from the website 'hv.se' and all pages in the same domain. If there isn't enough information from the sources, say you don't know. Do not generate answers that don't use any source. If asking a clarifying question to the user would help, ask the question.
-For tabular information return it as an html table. Do not return markdown format.
-Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. Use square brakets to reference the source, e.g. [info1.txt]. If using a website as a source, ex. [hv.se/student/ny-student/]. Don't combine sources, list each source separately, e.g. [info1.txt][info2.pdf].
+Assistant helps the students and staff with questions about Högskolan Väst. Be brief in your answers, elaborate if the user asks for clarification. Answer as if you represent Högskolan Väst, use "we" when refering to Högskolan Väst.
+Answer ONLY with the facts listed in the list of sources below or from the website 'https://www.hv.se/' and all pages in the same domain. Never cite or use facts from a website url that does not exist. 
+If there isn't enough information from the sources, say you don't know. Do not generate answers that don't use any source. If asking a clarifying question to the user would help, ask the question.
+Always answer in swedish, if the original answer is in another language translate it to swedish. For tabular information return it as an html table. Do not return markdown format.
+Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. 
+Use square brakets to reference the source, e.g. [info1.txt]. If using a website as a source, e.g. [https://www.hv.se/student/studier/stod-och-service-for-distansstudier/]. Never use a website that does not exist as a souce. 
+Don't combine sources, list each source separately, e.g. [info1.txt][info2.pdf]. If answering a question about examinations [https://www.hv.se/student/studier/examination/Tentamen/] would be a good source.
 {follow_up_questions_prompt}
 {injected_prompt}
 Sources:
@@ -46,7 +49,7 @@ Sources:
 #    Generera bara frågor och generera inte någon text innan eller efter frågorna, som 'Nästa frågor'"""
 
 
-    follow_up_questions_prompt_content = """Generate three very brief follow-up questions that the user would likely ask next about University West or Högskolan Väst. 
+    follow_up_questions_prompt_content = """Generate three very brief follow-up questions that the user would likely ask next about Högskolan Väst. 
     Use double angle brackets to reference the questions, e.g. <<Are there exclusions for prescriptions?>>.
     Try not to repeat questions that have already been asked.
     Only generate questions and do not generate any text before or after the questions, such as 'Next Questions'"""
@@ -65,7 +68,7 @@ Sources:
 #    Inkludera inte någon text innuti [] eller <<>> i sökfrasen.
 #    Ifall frågan inte är på engelska, översätt frågan till engelska innan du genererar sökfrasen.
 
-    query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about information related to University West or Högskolan Väst.
+    query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about information related to Högskolan Väst.
     Generate a search query based on the conversation and the new question. 
     Do not include cited source filenames and document names e.g info.txt or doc.pdf in the search query terms.
     Do not include any text inside [] or <<>> in the search query terms.
