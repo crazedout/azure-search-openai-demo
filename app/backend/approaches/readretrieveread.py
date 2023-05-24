@@ -18,16 +18,28 @@ from lookuptool import CsvLookupTool
 # [1] E. Karpas, et al. arXiv:2205.00445
 class ReadRetrieveReadApproach(Approach):
 
+# OG Prompt
+#"You are an intelligent assistant helping Contoso Inc employees with their healthcare plan questions and employee handbook questions. " \
+#"Answer the question using only the data provided in the information sources below. " \
+#"For tabular information return it as an html table. Do not return markdown format. " \
+#"Each source has a name followed by colon and the actual data, quote the source name for each piece of data you use in the response. " \
+#"For example, if the question is \"What color is the sky?\" and one of the information sources says \"info123: the sky is blue whenever it's not cloudy\", then answer with \"The sky is blue [info123]\" " \
+#"It's important to strictly follow the format where the name of the source is in square brackets at the end of the sentence, and only up to the prefix before the colon (\":\"). " \
+#"If there are multiple sources, cite each one in their own square brackets. For example, use \"[info343][ref-76]\" and not \"[info343,ref-76]\". " \
+#"Never quote tool names as sources." \
+#"If you cannot answer using the sources below, say that you don't know. " \
+#"\n\nYou can access to the following tools:"
+
     template_prefix = \
-"You are an intelligent assistant helping Contoso Inc employees with their healthcare plan questions and employee handbook questions. " \
-"Answer the question using only the data provided in the information sources below. " \
+"You are an intelligent assistant helping students of staff at University West or Högskolan Väst with questions about University West or Högskolan Väst. " \
+"Answer the question using only the data provided in the information sources below or from the website 'hv.se' and all pages in the same domain. " \
 "For tabular information return it as an html table. Do not return markdown format. " \
 "Each source has a name followed by colon and the actual data, quote the source name for each piece of data you use in the response. " \
 "For example, if the question is \"What color is the sky?\" and one of the information sources says \"info123: the sky is blue whenever it's not cloudy\", then answer with \"The sky is blue [info123]\" " \
 "It's important to strictly follow the format where the name of the source is in square brackets at the end of the sentence, and only up to the prefix before the colon (\":\"). " \
 "If there are multiple sources, cite each one in their own square brackets. For example, use \"[info343][ref-76]\" and not \"[info343,ref-76]\". " \
 "Never quote tool names as sources." \
-"If you cannot answer using the sources below, say that you don't know. " \
+"If you cannot answer using the sources below or using the information on the website 'hv.se' and all pages in the same domain, say that you don't know. " \
 "\n\nYou can access to the following tools:"
     
     template_suffix = """
@@ -37,7 +49,7 @@ Question: {input}
 
 Thought: {agent_scratchpad}"""    
 
-    CognitiveSearchToolDescription = "useful for searching the Microsoft employee benefits information such as healthcare plans, retirement plans, etc."
+    CognitiveSearchToolDescription = "useful for searching the Microsoft employee benefits information such as healthcare plans, retirement plans, etc." #change?
 
     def __init__(self, search_client: SearchClient, openai_deployment: str, sourcepage_field: str, content_field: str):
         self.search_client = search_client
@@ -55,7 +67,7 @@ Thought: {agent_scratchpad}"""
             r = self.search_client.search(q,
                                           filter=filter, 
                                           query_type=QueryType.SEMANTIC, 
-                                          query_language="en-us", 
+                                          query_language="en-us", #sv-se?
                                           query_speller="lexicon", 
                                           semantic_configuration_name="default", 
                                           top = top,
