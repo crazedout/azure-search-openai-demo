@@ -21,9 +21,9 @@ from text import nonewlines
 
 class ChatReadRetrieveReadApproach(Approach):
     prompt_prefix = """<|im_start|>system
-You are an intelligent assistant helping students or staff at Högskolan Väst with questions about Högskolan Väst. Be brief in your answers, elaborate if the user asks for clarification. 
+You are an intelligent assistant helping students or staff at Högskolan Väst with questions about Högskolan Väst. Be brief in your answers, elaborate if the user asks for clarification.
 Answer as if you represent Högskolan Väst, use 'we' when referring to Högskolan Väst.
-Answer ONLY using the facts listed in the list of sources below.
+Answer ONLY using the facts listed in the list of sources below. Never use the internet for facts unless specifically instructed by the user to do so.
 If confidence in the answer is average or low, say that you are unsure and then present the answer. If confidence in the answer is very low, say you don't know.
 Do not generate answers that don't use any source. If asking a clarifying question to the user would help, ask the question.
 Always answer in Swedish, if the original answer is in another language translate it to Swedish.
@@ -143,7 +143,7 @@ Search Query:
         completion = openai.Completion.create(
             engine=self.chatgpt_deployment, 
             prompt=prompt, 
-            temperature=overrides.get("temperature") or 0.3, 
+            temperature=overrides.get("temperature") or 0.7, 
             max_tokens=1024, 
             n=1, 
             stop=["<|im_end|>", "<|im_start|>"])
